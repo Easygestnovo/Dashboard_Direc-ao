@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt"><head><meta charset="utf-8"/>
+<title>Dashboard EasyGest 2026 - Interno</title>
+<style>
+body{margin:0;font-family:'Segoe UI',sans-serif;background:#0b204d;color:#fff;}
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:230px;background:#081a3d;padding:24px 16px;box-shadow:2px 0 8px rgba(0,0,0,.4);display:flex;flex-direction:column;gap:24px;}
+.menu-title{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#9ca3af;}
+.nav{display:flex;flex-direction:column;gap:8px;}
+.nav button{width:100%;border-radius:999px;border:1px solid transparent;padding:10px 14px;background:transparent;color:#e5e7eb;text-align:left;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:10px;}
+.nav button.active{background:#118bd4;border-color:#36a3e4;color:#ffffff;font-weight:600;}
+.nav button:hover{background:rgba(148,163,184,.2);}
+.nav img.nav-icon{width:18px;height:18px;display:block;}
+.content{flex:1;padding:24px 32px 40px;}
+.banner{display:flex;justify-content:center;padding:10px 0 20px 0;}
+.banner img{max-height:150px;}
+h1{margin:0 0 8px 0;font-size:26px;display:flex;align-items:center;gap:10px;}
+.title-icon{width:22px;height:22px;display:inline-block;}
+.subtitle{margin-bottom:24px;color:#cbd5f5;font-size:14px;}
+.section-title{font-size:20px;margin:10px 0 20px;display:flex;align-items:center;gap:10px;}
+.section-title img.section-icon{width:20px;height:20px;display:block;}
+.pill{font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;border-radius:999px;background:rgba(148,163,184,.2);}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;}
+.chart{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(15,23,42,.5);padding:16px 18px 18px;overflow-x:auto;color:#111;}
+.chart h2{text-align:center;margin-bottom:10px;font-size:16px;color:#0b204d;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{border:1px solid #e5e7eb;padding:6px 8px;text-align:left;}
+th{background:#f9fafb;color:#111;}
+.section{display:none;}
+.section.active{display:block;}
+.section-separator{margin:26px 0 12px;border-top:1px dashed rgba(148,163,184,.4);}
+/* FIX ICONS SIDEBAR */
+.nav button img, .nav-icon{
+  width:18px;height:18px;display:inline-block;object-fit:contain;vertical-align:middle;flex:0 0 auto;
+}
+
+/* --- Direção subtabs + drilldown --- */
+.pills{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px;}
+.pillbtn{border:1px solid rgba(148,163,184,.35);background:rgba(148,163,184,.12);color:#e5e7eb;border-radius:999px;padding:6px 10px;font-size:12px;cursor:pointer;}
+.pillbtn.active{background:#118bd4;border-color:#36a3e4;color:#fff;font-weight:600;}
+.dir-pane{display:none;}
+.dir-pane.active{display:block;}
+.cards2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.cards4{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media (max-width: 980px){.cards4{grid-template-columns:1fr;}}
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;}
+.card{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(15,23,42,.5);padding:14px 16px;color:#111;overflow-x:auto;}
+.card-title{text-align:center;margin:2px 0 10px 0;font-size:14px;color:#0b204d;font-weight:700;}
+a.drill{color:#0b204d;font-weight:700;text-decoration:underline;}
+a.drill:hover{opacity:.85;}
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.75);display:none;align-items:center;justify-content:center;z-index:9999;padding:18px;}
+.modal{background:#fff;color:#0f172a;border-radius:16px;max-width:1100px;width:100%;max-height:85vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e5e7eb;gap:10px;}
+.modal-title{font-weight:800;color:#0b204d;}
+.modal-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.modal-actions input{padding:8px 10px;border:1px solid #cbd5e1;border-radius:10px;min-width:240px;}
+.btn{padding:8px 10px;border-radius:10px;border:1px solid #cbd5e1;background:#f8fafc;cursor:pointer;font-weight:600;}
+.btn.primary{background:#118bd4;border-color:#36a3e4;color:#fff;}
+.btn.danger{background:#ef4444;border-color:#ef4444;color:#fff;}
+.modal-body{padding:12px 16px;overflow:auto;max-height:calc(85vh - 58px);}
+.smallnote{font-size:12px;color:#64748b;margin-top:2px;}
+.detail-table th{position:sticky;top:0;z-index:1;}
+
+
+</style>
+</head>
+<body>
+<script>
+var p = prompt("🔒 Área Reservada \n\nIntroduza a palavra-passe:");
+if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="https://www.google.com/"; }
+</script>
+<div class="layout">
+<aside class="sidebar">
+<div class="menu-title">Dashboards 2026 (Interno)</div>
+<div class="nav">
+<button class="active" data-target="sec-ang"><img alt="Angariações" class="nav-icon" src="Angariacao.png"/>Angariações</button>
+<button data-target="sec-fat"><img alt="Faturação" class="nav-icon" src="Faturacao.png"/>Faturação</button><button data-target="sec-cred"><img alt="Crédito" class="nav-icon" src="Faturacao.png"/>Crédito</button>
+<button data-target="sec-dir"><img alt="Direção" class="nav-icon" src="Dashboards.png"/>Direção</button>
+</div>
+</aside>
+<main class="content">
+<div class="banner"><img alt="EasyGest" src="banner_dashboard_final.jpg"/></div>
+<h1><img alt="Dashboards" class="title-icon" src="Dashboards.png"/>Dashboards EasyGest 2026</h1>
+<div class="subtitle">Visão consolidada de Angariações e Faturação.<br/><span style="font-size:12px;opacity:.85">Fonte Faturação: <b>Resultados Ranking Faturacao 2026_.xlsx</b> | Fonte Angariações: <b>angariacoes_2026_macro.xlsx</b></span></div>
+<section class="section active" id="sec-ang">
+<div class="section-title"><img alt="Angariações" class="section-icon" src="Angariacao.png"/>Dashboard de Angariações 2026 <span class="pill">Mediação</span></div>
+<div class="grid">
+<div class="chart"><h2>Angariador - Total</h2>
+<table><thead><tr><th>Lugar</th><th>Angariador</th><th>Total</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>José Estebainha</td><td>4</td></tr><tr><td>🥈 2º</td><td>Ana Cruz</td><td>3</td></tr><tr><td>🥈 2º</td><td>Madalena Melo</td><td>3</td></tr><tr><td>🥈 2º</td><td>Paula Coelho</td><td>3</td></tr><tr><td>🥉 3º</td><td>Agostinho Gomes</td><td>2</td></tr><tr><td>🥉 3º</td><td>Paulo Julio</td><td>2</td></tr><tr><td>🥉 3º</td><td>Mário Ângelo</td><td>2</td></tr><tr><td>🥉 3º</td><td>Lurdes Macedo</td><td>2</td></tr><tr><td>🥉 3º</td><td>Luisa Fernandes</td><td>2</td></tr><tr><td>🥉 3º</td><td>Elisabete Laurindo</td><td>2</td></tr><tr><td>🥉 3º</td><td>João V Gonçalves</td><td>2</td></tr><tr><td>🥉 3º</td><td>Carlos Estebainha</td><td>2</td></tr><tr><td>🥉 3º</td><td>Paulo M Santos</td><td>2</td></tr><tr><td>🥉 3º</td><td>Luísa Salgado</td><td>2</td></tr><tr><td>4º</td><td>Manuel Nunes</td><td>1</td></tr><tr><td>4º</td><td>Bruno Rodrigues</td><td>1</td></tr><tr><td>4º</td><td>Sónia Santos</td><td>1</td></tr><tr><td>4º</td><td>Tiago Abreu Pereira</td><td>1</td></tr><tr><td>4º</td><td>Carlos Marco</td><td>1</td></tr><tr><td>4º</td><td>Olinda Silva</td><td>1</td></tr><tr><td>4º</td><td>Cristina Mendonça</td><td>1</td></tr><tr><td>4º</td><td>Miguel Rodrigues</td><td>1</td></tr><tr><td>4º</td><td>Miguel Ângelo</td><td>1</td></tr><tr><td>4º</td><td>Manuela Conceição</td><td>1</td></tr><tr><td>4º</td><td>Nicole Nunes</td><td>1</td></tr><tr><td>4º</td><td>Graça Corvinho</td><td>1</td></tr><tr><td>4º</td><td>Diana Marques</td><td>1</td></tr><tr><td>4º</td><td>Paula Rodrigues</td><td>1</td></tr><tr><td>4º</td><td>Carina Salgueiro</td><td>1</td></tr><tr><td>4º</td><td>Carlos Mendes</td><td>1</td></tr><tr><td>4º</td><td>Jose Antunes</td><td>1</td></tr><tr><td>4º</td><td>José Rodrigues</td><td>1</td></tr><tr><td>4º</td><td>Álvaro Ferreira</td><td>1</td></tr><tr><td>4º</td><td>Carlos Abrantes</td><td>1</td></tr><tr><td>4º</td><td>Antonieta Martins</td><td>1</td></tr><tr><td>4º</td><td>Luis Maciel</td><td>1</td></tr><tr><td>4º</td><td>Vera Santos Silva</td><td>1</td></tr><tr><td>4º</td><td>Anabela Lourenço</td><td>1</td></tr><tr><td>4º</td><td>Adriana Assis</td><td>1</td></tr><tr><td>4º</td><td>Francisco Fernandes</td><td>1</td></tr><tr><td>4º</td><td>Sónia Pisco</td><td>1</td></tr><tr><td>4º</td><td>Patrícia Félix</td><td>1</td></tr><tr><td>4º</td><td>Liliana Duarte</td><td>1</td></tr>
+</tbody></table></div>
+<div class="chart"><h2>Loja - Total</h2>
+<table><thead><tr><th>Lugar</th><th>Loja</th><th>Total</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>Coimbra</td><td>10</td></tr><tr><td>🥈 2º</td><td>Oeiras</td><td>7</td></tr><tr><td>🥉 3º</td><td>Portimão</td><td>6</td></tr><tr><td>4º</td><td>Vila Real de Sto António</td><td>5</td></tr><tr><td>5º</td><td>Beja</td><td>4</td></tr><tr><td>5º</td><td>Aveiro</td><td>4</td></tr><tr><td>5º</td><td>Aljustrel</td><td>4</td></tr><tr><td>5º</td><td>Graça</td><td>4</td></tr><tr><td>6º</td><td>Nazaré</td><td>3</td></tr><tr><td>6º</td><td>Pinhal Novo</td><td>3</td></tr><tr><td>7º</td><td>Tavira</td><td>2</td></tr><tr><td>7º</td><td>Açores</td><td>2</td></tr><tr><td>7º</td><td>Lourinhã</td><td>2</td></tr><tr><td>8º</td><td>Laranjeiras</td><td>1</td></tr><tr><td>8º</td><td>Setubal</td><td>1</td></tr><tr><td>8º</td><td>Mem Martins</td><td>1</td></tr><tr><td>8º</td><td>EasyHub Seixal</td><td>1</td></tr><tr><td>8º</td><td>Leiria</td><td>1</td></tr><tr><td>8º</td><td>Bragança</td><td>1</td></tr>
+</tbody></table></div>
+<div class="chart"><h2>Angariador - Exclusivo</h2>
+<table><thead><tr><th>Lugar</th><th>Angariador</th><th>Exclusivos</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>Ana Cruz</td><td>3</td></tr><tr><td>🥈 2º</td><td>Elisabete Laurindo</td><td>2</td></tr><tr><td>🥈 2º</td><td>Lurdes Macedo</td><td>2</td></tr><tr><td>🥈 2º</td><td>Carlos Estebainha</td><td>2</td></tr><tr><td>🥉 3º</td><td>Bruno Rodrigues</td><td>1</td></tr><tr><td>🥉 3º</td><td>Manuel Nunes</td><td>1</td></tr><tr><td>🥉 3º</td><td>Luisa Fernandes</td><td>1</td></tr><tr><td>🥉 3º</td><td>Paulo Julio</td><td>1</td></tr><tr><td>🥉 3º</td><td>Tiago Abreu Pereira</td><td>1</td></tr><tr><td>🥉 3º</td><td>Olinda Silva</td><td>1</td></tr><tr><td>🥉 3º</td><td>Diana Marques</td><td>1</td></tr><tr><td>🥉 3º</td><td>Paulo M Santos</td><td>1</td></tr><tr><td>🥉 3º</td><td>Miguel Ângelo</td><td>1</td></tr><tr><td>🥉 3º</td><td>Manuela Conceição</td><td>1</td></tr><tr><td>🥉 3º</td><td>Nicole Nunes</td><td>1</td></tr><tr><td>🥉 3º</td><td>Antonieta Martins</td><td>1</td></tr><tr><td>🥉 3º</td><td>Miguel Rodrigues</td><td>1</td></tr><tr><td>🥉 3º</td><td>José Rodrigues</td><td>1</td></tr><tr><td>🥉 3º</td><td>Paula Coelho</td><td>1</td></tr><tr><td>🥉 3º</td><td>Luis Maciel</td><td>1</td></tr><tr><td>🥉 3º</td><td>Adriana Assis</td><td>1</td></tr><tr><td>🥉 3º</td><td>Francisco Fernandes</td><td>1</td></tr><tr><td>🥉 3º</td><td>Sónia Pisco</td><td>1</td></tr><tr><td>🥉 3º</td><td>Patrícia Félix</td><td>1</td></tr><tr><td>🥉 3º</td><td>Liliana Duarte</td><td>1</td></tr>
+</tbody></table></div>
+<div class="chart"><h2>Loja - Exclusivo</h2>
+<table><thead><tr><th>Lugar</th><th>Loja</th><th>Exclusivos</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>Coimbra</td><td>5</td></tr><tr><td>🥈 2º</td><td>Beja</td><td>4</td></tr><tr><td>🥈 2º</td><td>Portimão</td><td>4</td></tr><tr><td>🥉 3º</td><td>Graça</td><td>3</td></tr><tr><td>4º</td><td>Pinhal Novo</td><td>2</td></tr><tr><td>4º</td><td>Vila Real de Sto António</td><td>2</td></tr><tr><td>4º</td><td>Açores</td><td>2</td></tr><tr><td>4º</td><td>Oeiras</td><td>2</td></tr><tr><td>5º</td><td>Laranjeiras</td><td>1</td></tr><tr><td>5º</td><td>Setubal</td><td>1</td></tr><tr><td>5º</td><td>Aveiro</td><td>1</td></tr><tr><td>5º</td><td>Mem Martins</td><td>1</td></tr><tr><td>5º</td><td>Lourinhã</td><td>1</td></tr><tr><td>5º</td><td>Bragança</td><td>1</td></tr>
+</tbody></table></div>
+</div>
+<div class="section-separator"></div>
+</section>
+<section class="section" id="sec-fat">
+<div class="section-title"><img alt="Faturação" class="section-icon" src="Faturacao.png"/>Dashboard de Faturação 2026 <span class="pill">Comissão Líquida</span></div>
+<div class="grid">
+<div class="chart"><h2>Consultores - Comissão Líquida</h2>
+<table><thead><tr><th>Lugar</th><th>Consultor</th><th>Comissão Líquida</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>Paulo Julio</td><td>11.859,38 €</td></tr><tr><td>🥈 2º</td><td>Graça Corvinho</td><td>10.582,50 €</td></tr><tr><td>🥉 3º</td><td>Madalena Melo</td><td>10.313,00 €</td></tr><tr><td>4º</td><td>Joaquim Belim</td><td>7.250,00 €</td></tr><tr><td>5º</td><td>Elisabete Laurindo</td><td>6.475,00 €</td></tr><tr><td>6º</td><td>Fernando Rocha</td><td>6.146,97 €</td></tr><tr><td>7º</td><td>Luísa Salgado</td><td>6.000,00 €</td></tr><tr><td>8º</td><td>Tiago Abreu Pereira</td><td>5.500,00 €</td></tr><tr><td>9º</td><td>Lurdes Macedo</td><td>5.200,00 €</td></tr><tr><td>10º</td><td>André Boavida</td><td>5.000,00 €</td></tr>
+</tbody></table></div>
+<div class="chart"><h2>Lojas - Comissão Líquida</h2>
+<table><thead><tr><th>Lugar</th><th>Loja</th><th>Comissão Líquida</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>Coimbra</td><td>26.984,38 €</td></tr><tr><td>🥈 2º</td><td>Vila Real de Sto Antonio</td><td>14.937,50 €</td></tr><tr><td>🥉 3º</td><td>Setúbal</td><td>12.637,50 €</td></tr><tr><td>4º</td><td>Aveiro</td><td>10.313,00 €</td></tr><tr><td>5º</td><td>Graça</td><td>10.200,00 €</td></tr><tr><td>6º</td><td>Pinhal Novo</td><td>9.260,00 €</td></tr><tr><td>7º</td><td>Açores</td><td>8.646,97 €</td></tr><tr><td>8º</td><td>Nazaré</td><td>8.250,00 €</td></tr><tr><td>9º</td><td>Vila Real de Santo António</td><td>4.240,00 €</td></tr><tr><td>10º</td><td>EasyHub Seixal</td><td>3.967,50 €</td></tr>
+</tbody></table></div>
+</div>
+</section><section class="section" id="sec-cred">
+<div class="section-title"><img alt="Crédito" class="section-icon" src="Faturacao.png"/>Dashboard de Crédito 2026 <span class="pill">Intermediação</span></div>
+<div class="grid">
+<div class="chart"><h2>IC - Comissão Líquida</h2>
+<table><thead><tr><th>Lugar</th><th>IC</th><th>Comissão</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>Cláudia Gaspar</td><td>6.480,00 €</td></tr><tr><td>🥈 2º</td><td>José N Domingues</td><td>5.115,00 €</td></tr><tr><td>🥉 3º</td><td>Carina Salgueiro</td><td>4.080,00 €</td></tr><tr><td>4º</td><td>Maria Clara Sousa</td><td>1.692,60 €</td></tr>
+</tbody></table>
+</div>
+<div class="chart"><h2>Loja - Comissão Líquida</h2>
+<table><thead><tr><th>Lugar</th><th>Loja</th><th>Comissão</th></tr></thead><tbody>
+<tr><td>🥇 1º</td><td>Coimbra</td><td>13.287,60 €</td></tr><tr><td>🥈 2º</td><td>IC Premium Invest</td><td>4.080,00 €</td></tr>
+</tbody></table>
+</div>
+</div>
+</section>
+<section class="section" id="sec-dir">
+<div class="section-title"><img alt="Direção" class="section-icon" src="Dashboards.png"/>Direção 2026 <span class="pill">Gestão</span></div>
+<div class="pills"><button class="pillbtn active" data-dir="__AGENCIA__">Agência</button>
+<button class="pillbtn" data-dir="Bruno Rodrigues">Bruno Rodrigues (10.200,00 €)</button>
+<button class="pillbtn" data-dir="Carlos Mendes">Carlos Mendes (49.325,00 €)</button>
+<button class="pillbtn" data-dir="Joana Marques">Joana Marques (37.297,38 €)</button>
+<button class="pillbtn" data-dir="Nuno Marques">Nuno Marques (15.546,97 €)</button>
+<button class="pillbtn" data-dir="JP">JP (3.440,00 €)</button></div>
+<div class="dir-pane active" data-pane="__AGENCIA__">
+<div class="cards3">
+<div class="card"><div class="card-title">Total (Diretor) - Mediação</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="director" href="#">49.325,00 €</a></td></tr><tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="director" href="#">37.297,38 €</a></td></tr><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="director" href="#">15.546,97 €</a></td></tr><tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="director" href="#">10.200,00 €</a></td></tr><tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="director" href="#">3.440,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Total por Loja - Mediação</div><table class="store-table"><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody><tr><td>Coimbra</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Coimbra" href="#">26.984,38 €</a></td></tr><tr><td>Vila Real de Santo António</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Vila Real de Santo António" href="#">19.177,50 €</a></td></tr><tr><td>Setúbal</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Setúbal" href="#">12.637,50 €</a></td></tr><tr><td>Aveiro</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Aveiro" href="#">10.313,00 €</a></td></tr><tr><td>Graça Lx</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Graça Lx" href="#">10.200,00 €</a></td></tr><tr><td>Pinhal Novo</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Pinhal Novo" href="#">9.260,00 €</a></td></tr><tr><td>Açores</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Açores" href="#">8.646,97 €</a></td></tr><tr><td>Nazaré</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Nazaré" href="#">8.250,00 €</a></td></tr><tr><td>Oeiras</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Oeiras" href="#">3.900,00 €</a></td></tr><tr><td>Beja</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Beja" href="#">3.440,00 €</a></td></tr><tr><td>Bragança</td><td><a class="drill" data-director="__AGENCIA__" data-filter-type="store" data-store="Bragança" href="#">3.000,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Diretor)</div><table class="detail-table"><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody><tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="credit_director" href="#">0,00 €</a></td></tr><tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr><tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="credit_director" href="#">510,01 €</a></td></tr><tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="credit_director" href="#">0,00 €</a></td></tr></tbody></table></div><div class="card"><div class="card-title">Crédito (Loja)</div>
+<table><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody><tr><td>Coimbra</td><td><a class="drill" data-store="Coimbra" data-director="__AGENCIA__" data-filter-type="credit_store" href="#">5.061,16 €</a></td></tr><tr><td>IC Premium Invest</td><td><a class="drill" data-store="IC Premium Invest" data-director="__AGENCIA__" data-filter-type="credit_store" href="#">510,01 €</a></td></tr></tbody></table></div>
+</div>
+<div class="section-separator"></div>
+<div class="grid">
+<div class="chart"><h2>Agência - Valor</h2>
+<table><thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+<tbody><tr><td>Mediação</td><td><a class="drill" data-filter-type="agency" href="#">9.026,93 €</a></td></tr><tr><td>Crédito</td><td><a class="drill" data-filter-type="credit_agency" href="#">510,01 €</a></td></tr></tbody></table></div>
+<div class="chart"><h2>Chefes - Comissão (Direção) - Mediação</h2>
+<table><thead><tr><th>Lugar</th><th>Chefe</th><th>Valor</th></tr></thead>
+<tbody><tr><td>🥇 1º</td><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="director" href="#">22.134,27 €</a></td></tr><tr><td>🥈 2º</td><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="director" href="#">8.150,14 €</a></td></tr><tr><td>🥉 3º</td><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="director" href="#">2.275,72 €</a></td></tr><tr><td>4º</td><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="director" href="#">1.146,66 €</a></td></tr><tr><td>5º</td><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="director" href="#">1.040,00 €</a></td></tr></tbody></table></div>
+<div class="chart"><h2>Chefes - Comissão (Direção) - Crédito</h2>
+<table><thead><tr><th>Lugar</th><th>Chefe</th><th>Valor</th></tr></thead>
+<tbody><tr><td>🥇 1º</td><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr><tr><td>🥈 2º</td><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr><tr><td>🥉 3º</td><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="credit_director" href="#">510,01 €</a></td></tr></tbody></table></div>
+</div>
+</div>
+<div class="dir-pane" data-pane="Bruno Rodrigues">
+<div class="cards4">
+<div class="card"><div class="card-title">Total (Diretor) - Mediação</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="director" href="#">10.200,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Total por Loja - Mediação</div><table class="store-table"><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody><tr><td>Graça Lx</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="store" data-store="Graça Lx" href="#">10.200,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Diretor)</div><table class="detail-table"><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody><tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="credit_director" href="#">0,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Loja)</div><table class="detail-table"><thead><tr><th>Loja</th><th>Crédito</th></tr></thead><tbody><tr><td colspan="2" style="color:#64748b;">Sem dados</td></tr></tbody></table></div>
+</div>
+<div class="section-separator"></div>
+<div class="cards2">
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Mediação</div>
+<table><thead><tr><th>Diretor</th><th>Total</th></tr></thead>
+<tbody><tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="director" href="#">1.040,00 €</a></td></tr></tbody></table>
+</div>
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Crédito</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="credit_director" href="#">0,00 €</a></td></tr></tbody></table></div></div>
+</div>
+<div class="dir-pane" data-pane="Carlos Mendes">
+<div class="cards4">
+<div class="card"><div class="card-title">Total (Diretor) - Mediação</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="director" href="#">49.325,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Total por Loja - Mediação</div><table class="store-table"><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody><tr><td>Vila Real de Santo António</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="store" data-store="Vila Real de Santo António" href="#">19.177,50 €</a></td></tr><tr><td>Setúbal</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="store" data-store="Setúbal" href="#">12.637,50 €</a></td></tr><tr><td>Pinhal Novo</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="store" data-store="Pinhal Novo" href="#">9.260,00 €</a></td></tr><tr><td>Nazaré</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="store" data-store="Nazaré" href="#">8.250,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Diretor)</div><table class="detail-table"><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody><tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Loja)</div><table class="detail-table"><thead><tr><th>Loja</th><th>Crédito</th></tr></thead><tbody><tr><td>Coimbra</td><td><a class="drill" data-store="Coimbra" data-director="Carlos Mendes" data-filter-type="credit_store" href="#">2.530,58 €</a></td></tr></tbody></table></div>
+</div>
+<div class="section-separator"></div>
+<div class="cards2">
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Mediação</div>
+<table><thead><tr><th>Diretor</th><th>Total</th></tr></thead>
+<tbody><tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="director" href="#">22.134,27 €</a></td></tr></tbody></table>
+</div>
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Crédito</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr></tbody></table></div></div>
+</div>
+<div class="dir-pane" data-pane="Joana Marques">
+<div class="cards4">
+<div class="card"><div class="card-title">Total (Diretor) - Mediação</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="director" href="#">37.297,38 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Total por Loja - Mediação</div><table class="store-table"><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody><tr><td>Coimbra</td><td><a class="drill" data-director="Joana Marques" data-filter-type="store" data-store="Coimbra" href="#">26.984,38 €</a></td></tr><tr><td>Aveiro</td><td><a class="drill" data-director="Joana Marques" data-filter-type="store" data-store="Aveiro" href="#">10.313,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Diretor)</div><table class="detail-table"><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody><tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Loja)</div><table class="detail-table"><thead><tr><th>Loja</th><th>Crédito</th></tr></thead><tbody><tr><td>Coimbra</td><td><a class="drill" data-store="Coimbra" data-director="Joana Marques" data-filter-type="credit_store" href="#">2.530,58 €</a></td></tr></tbody></table></div>
+</div>
+<div class="section-separator"></div>
+<div class="cards2">
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Mediação</div>
+<table><thead><tr><th>Diretor</th><th>Total</th></tr></thead>
+<tbody><tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="director" href="#">8.150,14 €</a></td></tr></tbody></table>
+</div>
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Crédito</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="credit_director" href="#">2.530,58 €</a></td></tr></tbody></table></div></div>
+</div>
+<div class="dir-pane" data-pane="Nuno Marques">
+<div class="cards4">
+<div class="card"><div class="card-title">Total (Diretor) - Mediação</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="director" href="#">15.546,97 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Total por Loja - Mediação</div><table class="store-table"><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody><tr><td>Açores</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="store" data-store="Açores" href="#">8.646,97 €</a></td></tr><tr><td>Oeiras</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="store" data-store="Oeiras" href="#">3.900,00 €</a></td></tr><tr><td>Bragança</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="store" data-store="Bragança" href="#">3.000,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Diretor)</div><table class="detail-table"><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="credit_director" href="#">510,01 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Loja)</div><table class="detail-table"><thead><tr><th>Loja</th><th>Crédito</th></tr></thead><tbody><tr><td>IC Premium Invest</td><td><a class="drill" data-store="IC Premium Invest" data-director="Nuno Marques" data-filter-type="credit_store" href="#">510,01 €</a></td></tr></tbody></table></div>
+</div>
+<div class="section-separator"></div>
+<div class="cards2">
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Mediação</div>
+<table><thead><tr><th>Diretor</th><th>Total</th></tr></thead>
+<tbody><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="director" href="#">2.275,72 €</a></td></tr></tbody></table>
+</div>
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Crédito</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="credit_director" href="#">510,01 €</a></td></tr></tbody></table></div></div>
+</div>
+<div class="dir-pane" data-pane="JP">
+<div class="cards4">
+<div class="card"><div class="card-title">Total (Diretor) - Mediação</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="director" href="#">3.440,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Total por Loja - Mediação</div><table class="store-table"><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody><tr><td>Beja</td><td><a class="drill" data-director="JP" data-filter-type="store" data-store="Beja" href="#">3.440,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Diretor)</div><table class="detail-table"><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody><tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="credit_director" href="#">0,00 €</a></td></tr></tbody></table></div>
+<div class="card"><div class="card-title">Crédito (Loja)</div><table class="detail-table"><thead><tr><th>Loja</th><th>Crédito</th></tr></thead><tbody><tr><td colspan="2" style="color:#64748b;">Sem dados</td></tr></tbody></table></div>
+</div>
+<div class="section-separator"></div>
+<div class="cards2">
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Mediação</div>
+<table><thead><tr><th>Diretor</th><th>Total</th></tr></thead>
+<tbody><tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="director" href="#">1.146,66 €</a></td></tr></tbody></table>
+</div>
+<div class="card"><div class="card-title">Comissão a Receber (Direção) - Crédito</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody><tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="credit_director" href="#">0,00 €</a></td></tr></tbody></table></div></div>
+</div>
+</section>
+</main></div>
+<script>
+const b = document.querySelectorAll('.nav button'), s = document.querySelectorAll('.section');
+b.forEach(x => x.onclick = () => {
+  b.forEach(i => i.classList.remove('active'));
+  x.classList.add('active');
+  s.forEach(j => j.classList.toggle('active', j.id === x.dataset.target));
+});
+</script>
+<!-- Drilldown Modal -->
+<div aria-modal="true" class="modal-backdrop" id="modalBackdrop" role="dialog">
+<div class="modal">
+<div class="modal-header">
+<div>
+<div class="modal-title" id="modalTitle">Detalhe</div>
+<div class="smallnote" id="modalSubtitle"></div>
+</div>
+<div class="modal-actions">
+<input id="searchBox" placeholder="Pesquisar (referência, cliente, imóvel, etc.)"/>
+<button class="btn primary" id="exportCsvBtn">Exportar CSV</button>
+<button class="btn danger" id="closeModalBtn">Fechar</button>
+</div>
+</div>
+<div class="modal-body">
+<div class="smallnote" id="detailCount" style="margin-bottom:10px;"></div>
+<div style="overflow:auto;">
+<table class="detail-table" id="detailTable"></table>
+</div>
+</div>
+</div>
+</div>
+<script>
+// Direção pills
+(function(){
+  const pillBtns = document.querySelectorAll('.pillbtn');
+  const panes = document.querySelectorAll('.dir-pane');
+  pillBtns.forEach(pb => pb.addEventListener('click', () => {
+    pillBtns.forEach(x => x.classList.remove('active'));
+    pb.classList.add('active');
+    const key = pb.dataset.dir;
+    panes.forEach(p => p.classList.toggle('active', p.dataset.pane === key));
+  }));
+})();
+
+// Drilldown data (Resultados Gerais embebido)
+const detailData = [{"Documento": "", "VEN_": 1094231, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Vila Real de Sto Antonio", "Valor Comissão Líq.": 3150.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Graça Corvinho", "Valor Recebido": 1260, "Gestão": "Carlos Mendes", "Equipa": "Vila Real de Santo António", "Loja.1": "Vila Real de Santo António"}, {"Documento": "", "VEN_": 1078530, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Açores", "Valor Comissão Líq.": 2119.32, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Fernando Rocha", "Valor Recebido": 1271.59, "Gestão": "Nuno Marques", "Equipa": "Equipa Fernando Rocha", "Loja.1": "Açores"}, {"Documento": "", "VEN_": 1098414, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Graça", "Valor Comissão Líq.": 5000.0, "Normal": "Não", "Estado": "Fechado", "Comercial": "André Boavida", "Valor Recebido": 2000, "Gestão": "Bruno Rodrigues", "Equipa": "Graça Lx", "Loja.1": "Graça Lx"}, {"Documento": "", "VEN_": 1095595, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Setúbal", "Valor Comissão Líq.": 5500.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Tiago Abreu Pereira", "Valor Recebido": "2 750€", "Gestão": "Carlos Mendes", "Equipa": "Equipa Ana Cristina", "Loja.1": "Setúbal"}, {"Documento": "", "VEN_": 1089015, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Oeiras", "Valor Comissão Líq.": 800.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Mario Angelo", "Valor Recebido": 320, "Gestão": "Nuno Marques", "Equipa": "Equipa Mario Angelo", "Loja.1": "Oeiras"}, {"Documento": "", "VEN_": "1089015_1", "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Oeiras", "Valor Comissão Líq.": 400.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Patricia Felix", "Valor Recebido": 200, "Gestão": "Nuno Marques", "Equipa": "Equipa Mario Angelo", "Loja.1": "Oeiras"}, {"Documento": "", "VEN_": "1089015_1", "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Oeiras", "Valor Comissão Líq.": 400.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Mario Angelo", "Valor Recebido": 160, "Gestão": "Nuno Marques", "Equipa": "Equipa Mario Angelo", "Loja.1": "Oeiras"}, {"Documento": "", "VEN_": 1097157, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Coimbra", "Valor Comissão Líq.": 7425.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Paulo Julio", "Valor Recebido": 3712.5, "Gestão": "Carlos Mendes", "Equipa": "Equipa Coimbra", "Loja.1": "Coimbra"}, {"Documento": "", "VEN_": 1099733, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Vila Real de Sto Antonio", "Valor Comissão Líq.": 1100.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Elisabete Laurindo", "Valor Recebido": 550, "Gestão": "Carlos Mendes", "Equipa": "Vila Real de Santo António", "Loja.1": "Vila Real de Santo António"}, {"Documento": "", "VEN_": 1026887, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Açores", "Valor Comissão Líq.": 4027.65, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Fernando Rocha", "Valor Recebido": 2416.6, "Gestão": "Nuno Marques", "Equipa": "Equipa Fernando Rocha", "Loja.1": "Açores"}, {"Documento": "", "VEN_": 1064029, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Beja", "Valor Comissão Líq.": 3440.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Carlos Estebainha", "Valor Recebido": 1376, "Gestão": "JP", "Equipa": "Beja", "Loja.1": "Beja"}, {"Documento": "", "VEN_": 1099166, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Coimbra", "Valor Comissão Líq.": 4434.38, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Paulo Julio", "Valor Recebido": 2217.18, "Gestão": "Carlos Mendes", "Equipa": "Equipa Coimbra", "Loja.1": "Coimbra"}, {"Documento": "", "VEN_": 1088206, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Nazaré", "Valor Comissão Líq.": 7250.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Joaquim Belim", "Valor Recebido": 3289.33, "Gestão": "Carlos Mendes", "Equipa": "Nazaré", "Loja.1": "Nazaré"}, {"Documento": "", "VEN_": 1088216, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "EasyHub Seixal", "Valor Comissão Líq.": 3967.5, "Normal": "Não", "Estado": "Fechado", "Comercial": "Roberto Da Silva	", "Valor Recebido": 2380.5, "Gestão": "João Costa", "Equipa": "Equipa Ruben Ferreira", "Loja.1": "EasyHub Seixal"}, {"Documento": "", "VEN_": 1099725, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Setúbal", "Valor Comissão Líq.": 1625.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Luis Cruz", "Valor Recebido": 812.5, "Gestão": "Carlos Mendes", "Equipa": "Equipa Ana Cristina", "Loja.1": "Setúbal"}, {"Documento": "", "VEN_": 1091584, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Aveiro", "Valor Comissão Líq.": 5137.5, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Madalena Melo", "Valor Recebido": 2055, "Gestão": "Joana Marques", "Equipa": "Aveiro", "Loja.1": "Aveiro"}, {"Documento": "", "VEN_": 1091417, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Bragança", "Valor Comissão Líq.": 3000.0, "Normal": "Não", "Estado": "Fechado", "Comercial": "Sónia Pisco", "Valor Recebido": 1500, "Gestão": "Nuno Marques", "Equipa": "Equipa Mogadouro", "Loja.1": "Bragança"}, {"Documento": "", "VEN_": 1098879, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Setúbal", "Valor Comissão Líq.": 3062.5, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Luis Cruz", "Valor Recebido": 1531.25, "Gestão": "Carlos Mendes", "Equipa": "Equipa Ana Cristina", "Loja.1": "Setúbal"}, {"Documento": "", "VEN_": 1093931, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Aveiro", "Valor Comissão Líq.": 5175.5, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Madalena Melo", "Valor Recebido": 2070.2, "Gestão": "Joana Marques", "Equipa": "Aveiro", "Loja.1": "Aveiro"}, {"Documento": "", "VEN_": 1088257, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Coimbra", "Valor Comissão Líq.": 5000.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Paulo M Santos", "Valor Recebido": 2500, "Gestão": "Joana Marques", "Equipa": "Equipa Viseu", "Loja.1": "Coimbra"}, {"Documento": "", "VEN_": 1092810, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Vila Real de Sto Antonio", "Valor Comissão Líq.": 5312.5, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Graça Corvinho", "Valor Recebido": 2125, "Gestão": "Carlos Mendes", "Equipa": "Vila Real de Santo António", "Loja.1": "Vila Real de Santo António"}, {"Documento": "", "VEN_": 1100296, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Vila Real de Sto Antonio", "Valor Comissão Líq.": 5375.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Elisabete Laurindo", "Valor Recebido": 2687.5, "Gestão": "Carlos Mendes", "Equipa": "Vila Real de Santo António", "Loja.1": "Vila Real de Santo António"}, {"Documento": "", "VEN_": 1097288, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Coimbra", "Valor Comissão Líq.": 6000.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Luísa Salgado", "Valor Recebido": 2400, "Gestão": "Carlos Mendes", "Equipa": "Equipa Coimbra", "Loja.1": "Coimbra"}, {"Documento": "", "VEN_": 1100502, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Oeiras", "Valor Comissão Líq.": 2300.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Matos Pires", "Valor Recebido": 1380, "Gestão": "Nuno Marques", "Equipa": "Equipa EasyWay", "Loja.1": "Oeiras"}, {"Documento": "", "VEN_": 1088753, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Graça", "Valor Comissão Líq.": 5200.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Lurdes Macedo", "Valor Recebido": 2600, "Gestão": "Bruno Rodrigues", "Equipa": "Graça Lx", "Loja.1": "Graça Lx"}, {"Documento": "", "VEN_": 1087689, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Setúbal", "Valor Comissão Líq.": 1200.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Adelaide Alpande", "Valor Recebido": 600, "Gestão": "Carlos Mendes", "Equipa": "Equipa Charneca da Caparica", "Loja.1": "Setúbal"}, {"Documento": "", "VEN_": 1096217, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Açores", "Valor Comissão Líq.": 2500.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Manuel Silva", "Valor Recebido": 1500, "Gestão": "Nuno Marques", "Equipa": "Equipa Manuel Silva", "Loja.1": "Açores"}, {"Documento": "", "VEN_": 1086495, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Pinhal Novo ", "Valor Comissão Líq.": 4630.0, "Normal": "Não", "Estado": "Fechado", "Comercial": "Luisa Fernandes", "Valor Recebido": 2315, "Gestão": "Carlos Mendes", "Equipa": "Equipa Sombras", "Loja.1": "Pinhal Novo "}, {"Documento": "", "VEN_": 1086495, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Pinhal Novo ", "Valor Comissão Líq.": 4630.0, "Normal": "Não", "Estado": "Fechado", "Comercial": "Yuri Costinha", "Valor Recebido": 2315, "Gestão": "Carlos Mendes", "Equipa": "Equipa Sombras", "Loja.1": "Pinhal Novo "}, {"Documento": "", "VEN_": 1092598, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Vila Real de Santo António", "Valor Comissão Líq.": 2120.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Graça Corvinho", "Valor Recebido": 848, "Gestão": "Carlos Mendes", "Equipa": "Vila Real de Santo António", "Loja.1": "Vila Real de Santo António"}, {"Documento": "", "VEN_": 1092598, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Vila Real de Santo António", "Valor Comissão Líq.": 2120.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Ângela Oeiras", "Valor Recebido": 848, "Gestão": "Carlos Mendes", "Equipa": "Vila Real de Santo António", "Loja.1": "Vila Real de Santo António"}, {"Documento": "", "VEN_": 1091116, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Setúbal", "Valor Comissão Líq.": 1250.0, "Normal": "Não", "Estado": "Fechado", "Comercial": "Adelaide Alpande", "Valor Recebido": 625, "Gestão": "Carlos Mendes", "Equipa": "Equipa Charneca da Caparica", "Loja.1": "Setúbal"}, {"Documento": "", "VEN_": 1033627, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Nazaré", "Valor Comissão Líq.": 1000.0, "Normal": "Não", "Estado": "Fechado", "Comercial": "Carlos Abrantes", "Valor Recebido": 450, "Gestão": "Carlos Mendes", "Equipa": "Nazaré", "Loja.1": "Nazaré"}, {"Documento": "", "VEN_": 1089092, "Ano Neg.": 2026, "Mês Neg.": 1, "Loja": "Coimbra", "Valor Comissão Líq.": 4125.0, "Normal": "Sim", "Estado": "Fechado", "Comercial": "Bruno Marques", "Valor Recebido": 2062.5, "Gestão": "Joana Marques", "Equipa": "Equipa Coimbra", "Loja.1": "Coimbra"}];
+const creditDetailData = [{"Mês": "Fevereiro", "Empresa": null, "Direcção": "Carlos Mendes", "Loja": "Coimbra", "Oportunidade": "CRB_32", "Valor": 645.0, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Joana Marques", "Loja": "Coimbra", "Oportunidade": "CRB_32", "Valor": 645.0, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Carlos Mendes", "Loja": "Coimbra", "Oportunidade": "CRB_31", "Valor": 378.0, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Joana Marques", "Loja": "Coimbra", "Oportunidade": "CRB_31", "Valor": 378.0, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Carlos Mendes", "Loja": "Coimbra", "Oportunidade": "CRB_74", "Valor": 211.58, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Joana Marques", "Loja": "Coimbra", "Oportunidade": "CRB_74", "Valor": 211.58, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Nuno Marques", "Loja": "IC Premium Invest", "Oportunidade": "CRB_28", "Valor": 369.38, "Agência": 369.38}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Joana Marques", "Loja": "Coimbra", "Oportunidade": "CRB_95", "Valor": 1296.0, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Carlos Mendes", "Loja": "Coimbra", "Oportunidade": "CRB_95", "Valor": 1296.0, "Agência": null}, {"Mês": "Fevereiro", "Empresa": null, "Direcção": "Nuno Marques", "Loja": "IC Premium Invest", "Oportunidade": "CRB_40", "Valor": 140.63, "Agência": 140.63}];
+
+// Modal helpers
+const backdrop = document.getElementById('modalBackdrop');
+const closeBtn = document.getElementById('closeModalBtn');
+const exportBtn = document.getElementById('exportCsvBtn');
+const searchBox = document.getElementById('searchBox');
+const titleEl = document.getElementById('modalTitle');
+const subEl = document.getElementById('modalSubtitle');
+const tableEl = document.getElementById('detailTable');
+const countEl = document.getElementById('detailCount');
+let currentRows = [];
+
+function openModal(title, subtitle, rows) {
+  titleEl.textContent = title;
+  subEl.textContent = subtitle || '';
+  searchBox.value = '';
+  currentRows = rows.slice();
+  renderTable(currentRows);
+  backdrop.style.display = 'flex';
+  searchBox.focus();
+}
+function closeModal() {
+  backdrop.style.display = 'none';
+  tableEl.innerHTML = '';
+  currentRows = [];
+}
+closeBtn.addEventListener('click', closeModal);
+backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && backdrop.style.display === 'flex') closeModal(); });
+
+function renderTable(rows) {
+  if (!rows || rows.length === 0) {
+    tableEl.innerHTML = "<thead><tr><th>Sem resultados</th></tr></thead><tbody><tr><td style='padding:12px;color:#64748b;'>Não existem linhas para este filtro.</td></tr></tbody>";
+    countEl.textContent = "0 linhas";
+    return;
+  }
+  const cols = Object.keys(rows[0]);
+  const thead = "<thead><tr>" + cols.map(c => `<th>${c}</th>`).join('') + "</tr></thead>";
+  const tbody = "<tbody>" + rows.map(r => "<tr>" + cols.map(c => `<td>${String(r[c] ?? '')}</td>`).join('') + "</tr>").join('') + "</tbody>";
+  tableEl.innerHTML = thead + tbody;
+  countEl.textContent = `${rows.length} linhas`;
+}
+function filterRows(baseRows, q) {
+  if (!q) return baseRows;
+  const qq = q.toLowerCase().trim();
+  return baseRows.filter(r => Object.values(r).some(v => String(v ?? '').toLowerCase().includes(qq)));
+}
+searchBox.addEventListener('input', () => {
+  renderTable(filterRows(currentRows, searchBox.value));
+});
+function toCsv(rows) {
+  if (!rows || rows.length === 0) return "";
+  const cols = Object.keys(rows[0]);
+  const esc = (s) => '"' + String(s ?? "").replace(/"/g, '""') + '"';
+  const lines = [];
+  lines.push(cols.map(esc).join(","));
+  rows.forEach(r => {
+    lines.push(cols.map(c => esc(r[c])).join(","));
+  });
+  return lines.join("\n");
+}
+exportBtn.addEventListener('click', () => {
+  const rows = filterRows(currentRows, searchBox.value);
+  const csv = toCsv(rows);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href = url;
+  a.download = `detalhe_direcao_${ts}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+// Drill click handling
+document.querySelectorAll('a.drill').forEach(a => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const type = a.dataset.filterType;
+    const director = a.dataset.director || "";
+    const store = a.dataset.store || "";
+    let rows = detailData;
+    let isCredit = false;
+    if (type.startsWith('credit_')) { rows = creditDetailData; isCredit = true; }
+
+    if (type === "agency") {
+      openModal("Detalhe — Agência", "Todas as VEN\'s", rows);
+      return;
+    }
+    if (type === "credit_agency") {
+      // Apenas valores atribuídos à Agência (coluna "Agência" no Excel)
+      const agencyRows = rows.filter(r => {
+        const v = Number(r["Agência"] ?? 0);
+        return !Number.isNaN(v) && v > 0;
+      });
+      openModal("Detalhe — Crédito (Agência)", "Operações com valor de Agência", agencyRows);
+      return;
+    }
+    if (type === "director") {
+      rows = rows.filter(r => String(r["Gestão"] ?? "").trim() === director);
+      openModal("Detalhe — Diretor", director, rows);
+      return;
+    }
+
+    if (type === "credit_director") {
+      rows = rows.filter(r => String(r["Direcção"] ?? "").trim() === director);
+      openModal("Detalhe — Crédito (Diretor)", director, rows);
+      return;
+    }
+    if (type === "credit_store") {
+      rows = rows.filter(r => String(r["Loja"] ?? "").trim() === store);
+      if (director && director !== "__AGENCIA__") {
+        rows = rows.filter(r => String(r["Direcção"] ?? "").trim() === director);
+        openModal("Detalhe — Crédito (Loja)", `${director} • ${store}`, rows);
+      } else {
+        openModal("Detalhe — Crédito (Loja)", store, rows);
+      }
+      return;
+    }
+
+    if (type === "store") {
+      rows = rows.filter(r => String(r["Loja"] ?? "").trim() === store);
+      if (director && director !== "__AGENCIA__") {
+        rows = rows.filter(r => String(r["Gestão"] ?? "").trim() === director);
+        openModal("Detalhe — Loja (Diretor)", `${director} • ${store}`, rows);
+      } else {
+        openModal("Detalhe — Loja", store, rows);
+      }
+      return;
+    }
+  });
+});
+</script>
+</body></html>
