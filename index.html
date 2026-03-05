@@ -53,7 +53,6 @@ a.drill:hover{opacity:.85;}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e5e7eb;gap:10px;}
 .modal-title{font-weight:800;color:#0b204d;}
 .modal-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-.monthFilter{padding:8px 10px;border:1px solid #e5e7eb;border-radius:10px;min-width:140px;}
 .modal-actions input{padding:8px 10px;border:1px solid #cbd5e1;border-radius:10px;min-width:240px;}
 .btn{padding:8px 10px;border-radius:10px;border:1px solid #cbd5e1;background:#f8fafc;cursor:pointer;font-weight:600;}
 .btn.primary{background:#118bd4;border-color:#36a3e4;color:#fff;}
@@ -92,7 +91,6 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 
 
 
-
 <section class="section active" id="sec-ang">
 <div class="section-title"><img alt="Angariações" class="section-icon" src="Angariacao.png"/>Dashboard de Angariações 2026 <span class="pill">Mediação</span></div>
 <div class="grid">
@@ -110,8 +108,6 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 </div>
 </div>
 </section>
-
-
 
 
 
@@ -154,8 +150,6 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 
 
 
-
-
 <section class="section" id="sec-cred">
 <div class="section-title"><img alt="Crédito" class="section-icon" src="Credito.png"/>Dashboard de Crédito 2026 <span class="pill">Intermediação</span></div>
 <div class="grid">
@@ -183,8 +177,6 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 
 
 
-
-
 <section class="section" id="sec-dir">
 <div class="section-title"><img alt="Direção" class="section-icon" src="Dashboards.png"/>Direção 2026 <span class="pill">Gestão</span></div>
 <div class="pills"><button class="pillbtn active" data-dir="__AGENCIA__">Agência</button><button class="pillbtn" data-dir="Bruno Rodrigues">Bruno Rodrigues</button><button class="pillbtn" data-dir="Carlos Mendes">Carlos Mendes</button><button class="pillbtn" data-dir="Joana Marques">Joana Marques</button><button class="pillbtn" data-dir="Nuno Marques">Nuno Marques</button><button class="pillbtn" data-dir="JP">JP</button></div>
@@ -192,7 +184,7 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 <div class="dir-pane active" data-pane="__AGENCIA__">
 <div class="cards3">
 <div class="card"><div class="card-title">Total (Diretor) - Mediação</div><table><thead><tr><th>Diretor</th><th>Total</th></tr></thead><tbody>
-<tr><td>Bruno Rodrigues</td><td><a class="drill" data-filter-type="director" data-director="Bruno Rodrigues" href="#">29.262,50 €</a></td></tr><tr><td>Carlos Mendes</td><td><a class="drill" data-filter-type="director" data-director="Carlos Mendes" href="#">95.510,00 €</a></td></tr><tr><td>Joana Marques</td><td><a class="drill" data-filter-type="director" data-director="Joana Marques" href="#">61.634,88 €</a></td></tr><tr><td>Nuno Marques</td><td><a class="drill" data-filter-type="director" data-director="Nuno Marques" href="#">52.871,08 €</a></td></tr><tr><td>JP</td><td><a class="drill" data-filter-type="director" data-director="JP" href="#">9.940,00 €</a></td></tr>
+<tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="director" href="#">29.262,50 €</a></td></tr><tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="director" href="#">95.510,00 €</a></td></tr><tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="director" href="#">61.634,88 €</a></td></tr><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="director" href="#">52.871,08 €</a></td></tr><tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="director" href="#">9.940,00 €</a></td></tr>
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Total por Loja - Mediação</div><table><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody>
@@ -200,11 +192,11 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Diretor)</div><table><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody>
-<tr><td>Joana Marques</td><td><a class="drill" data-filter-type="credit_director" data-director="Joana Marques" href="#">15.687,60 €</a></td></tr><tr><td>Nuno Marques</td><td><a class="drill" data-filter-type="credit_director" data-director="Nuno Marques" href="#">4.080,00 €</a></td></tr>
+<tr><td>Joana Marques</td><td><a class="drill" data-director="Joana Marques" data-filter-type="credit_director" href="#">15.687,60 €</a></td></tr><tr><td>Nuno Marques</td><td><a class="drill" data-director="Nuno Marques" data-filter-type="credit_director" href="#">4.080,00 €</a></td></tr>
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Loja)</div><table><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody>
-<tr><td>Coimbra</td><td><a class="drill" data-filter-type="credit_store" data-store="Coimbra" data-director="__AGENCIA__" href="#">15.687,60 €</a></td></tr><tr><td>IC Premium Invest</td><td><a class="drill" data-filter-type="credit_store" data-store="IC Premium Invest" data-director="__AGENCIA__" href="#">4.080,00 €</a></td></tr>
+<tr><td>Coimbra</td><td><a class="drill" data-filter-type="credit_store" data-store="Coimbra" data-director="__AGENCIA__" href="#">15.687,60 €</a></td></tr><tr><td>IC Premium Invest</td><td><a class="drill" data-filter-type="credit_store" data-store="IC Premium Invest" data-director="__AGENCIA__" href="#">4.080,00 €</a></td></tr><tr><td>nan</td><td><a class="drill" data-filter-type="credit_store" data-store="nan" data-director="__AGENCIA__" href="#">0,00 €</a></td></tr>
 </tbody></table></div>
 </div>
 
@@ -241,7 +233,7 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Diretor)</div><table><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody>
-<tr><td>Bruno Rodrigues</td><td><a class="drill" data-director="Bruno Rodrigues" data-filter-type="credit_director" href="#">0,00 €</a></td></tr>
+<tr><td colspan="2" style="padding:10px;color:#64748b;">Não tem dados para exportar</td></tr>
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Loja)</div><table><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody>
@@ -275,7 +267,7 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Diretor)</div><table><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody>
-<tr><td>Carlos Mendes</td><td><a class="drill" data-director="Carlos Mendes" data-filter-type="credit_director" href="#">0,00 €</a></td></tr>
+<tr><td colspan="2" style="padding:10px;color:#64748b;">Não tem dados para exportar</td></tr>
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Loja)</div><table><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody>
@@ -377,7 +369,7 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Diretor)</div><table><thead><tr><th>Diretor</th><th>Crédito</th></tr></thead><tbody>
-<tr><td>JP</td><td><a class="drill" data-director="JP" data-filter-type="credit_director" href="#">0,00 €</a></td></tr>
+<tr><td colspan="2" style="padding:10px;color:#64748b;">Não tem dados para exportar</td></tr>
 </tbody></table></div>
 
 <div class="card"><div class="card-title">Crédito (Loja)</div><table><thead><tr><th>Loja</th><th>Total</th></tr></thead><tbody>
@@ -409,7 +401,6 @@ if (p !== "direcao2026"){ alert("❌ Acesso negado."); window.location.href="htt
 
 
 
-
 </main></div>
 <script>
 const b = document.querySelectorAll('.nav button'), s = document.querySelectorAll('.section');
@@ -433,15 +424,15 @@ if (initial) activate(initial);
 </div>
 <div class="modal-actions">
 <input id="searchBox" placeholder="Pesquisar (referência, cliente, imóvel, etc.)"/>
-<select id="monthFilter" class="monthFilter">
+<button class="btn primary" id="exportCsvBtn">Exportar CSV</button>
+<button class="btn primary" id="exportXlsxBtn">Exportar Excel</button>
+<select id="monthFilter" class="btn">
   <option value="all">Todos os meses</option>
   <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option>
   <option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option>
   <option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option>
   <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
 </select>
-<button class="btn primary" id="exportCsvBtn">Exportar CSV</button>
-<button class="btn primary" id="exportExcelBtn">Exportar Excel</button>
 <button class="btn danger" id="closeModalBtn">Fechar</button>
 </div>
 </div>
@@ -534,6 +525,8 @@ const dirMediaData = [{"Unnamed: 0": NaN, "Mês": "Janeiro", "Empresa": "Unstopp
 const backdrop = document.getElementById('modalBackdrop');
 const closeBtn = document.getElementById('closeModalBtn');
 const exportBtn = document.getElementById('exportCsvBtn');
+const exportXlsxBtn = document.getElementById('exportXlsxBtn');
+const monthFilter = document.getElementById('monthFilter');
 const searchBox = document.getElementById('searchBox');
 const titleEl = document.getElementById('modalTitle');
 const subEl = document.getElementById('modalSubtitle');
@@ -541,15 +534,43 @@ const tableEl = document.getElementById('detailTable');
 const countEl = document.getElementById('detailCount');
 let currentRows = [];
 let currentRowsOriginal = [];
-const monthFilter = document.getElementById('monthFilter');
-const exportExcelBtn = document.getElementById('exportExcelBtn');
+
+function getRowMonth(r){
+  const keys = ["Mês Neg.","Mes","Mês","Month","month"];
+  for(const k of keys){
+    if(r && r[k] != null && r[k] !== ""){
+      const n = Number(r[k]);
+      if(Number.isFinite(n)) return n;
+    }
+  }
+  return null;
+}
+function applyMonthFilter(rows){
+  const v = (monthFilter && monthFilter.value) ? monthFilter.value : "all";
+  if(v === "all") return rows;
+  const m = Number(v);
+  return rows.filter(r => getRowMonth(r) === m);
+}
+function exportExcel(rows){
+  try{
+    if(typeof XLSX === "undefined"){ alert("Biblioteca Excel não carregou."); return; }
+    if(!rows || !rows.length){ alert("Sem dados para exportar"); return; }
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Dados");
+    XLSX.writeFile(wb, "drilldown.xlsx");
+  }catch(e){
+    alert("Erro ao exportar Excel.");
+  }
+}
+
 
 function openModal(title, subtitle, rows) {
   titleEl.textContent = title;
   subEl.textContent = subtitle || '';
   searchBox.value = '';
   currentRowsOriginal = rows.slice();
-  if(monthFilter){ monthFilter.value='all'; }
+  if(monthFilter) monthFilter.value = 'all';
   currentRows = applyMonthFilter(currentRowsOriginal);
   renderTable(currentRows);
   backdrop.style.display = 'flex';
@@ -581,58 +602,11 @@ function filterRows(baseRows, q) {
   const qq = q.toLowerCase().trim();
   return baseRows.filter(r => Object.values(r).some(v => String(v ?? '').toLowerCase().includes(qq)));
 }
-if(monthFilter){
-  monthFilter.addEventListener('change', ()=>{
-    renderTable(filterRows(applyMonthFilter(currentRowsOriginal), searchBox.value));
-  });
-}
-if(exportExcelBtn){
-  exportExcelBtn.addEventListener('click', ()=>{
-    exportExcel(filterRows(applyMonthFilter(currentRowsOriginal), searchBox.value));
-  });
-}
+if(monthFilter){ monthFilter.addEventListener('change', ()=>{ currentRows = applyMonthFilter(currentRowsOriginal); renderTable(currentRows); }); }
+
 searchBox.addEventListener('input', () => {
-  renderTable(filterRows(applyMonthFilter(currentRowsOriginal), searchBox.value));
+  renderTable(filterRows(currentRows, searchBox.value));
 });
-
-function _monthNumber(v){
-  if(v===null || v===undefined) return null;
-  const s = String(v).trim();
-  // numeric month
-  const n = Number(s.replace(",", "."));
-  if(Number.isFinite(n) && n>=1 && n<=12) return n;
-  // PT month names
-  const m = s.toLowerCase();
-  const map = {"janeiro":1,"fevereiro":2,"março":3,"marco":3,"abril":4,"maio":5,"junho":6,"julho":7,"agosto":8,"setembro":9,"outubro":10,"novembro":11,"dezembro":12};
-  return map[m] || null;
-}
-function _getRowMonth(r){
-  // tenta várias colunas
-  const keys = ["Mês Neg.","Mes Neg.","Mês","Mes","Mês Neg", "Mes Neg"];
-  for(const k of keys){
-    if(r && Object.prototype.hasOwnProperty.call(r,k)){
-      const mn = _monthNumber(r[k]);
-      if(mn) return mn;
-    }
-  }
-  return null;
-}
-function applyMonthFilter(rows){
-  if(!monthFilter) return rows;
-  const mv = monthFilter.value;
-  if(!mv || mv==="all") return rows;
-  const target = Number(mv);
-  return rows.filter(r => _getRowMonth(r) === target);
-}
-function exportExcel(rows){
-  if(!rows || rows.length===0){ alert("Sem dados para exportar"); return; }
-  if(typeof XLSX==="undefined"){ alert("Biblioteca XLSX não carregada."); return; }
-  const ws = XLSX.utils.json_to_sheet(rows);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Dados");
-  XLSX.writeFile(wb, "drilldown.xlsx");
-}
-
 function toCsv(rows) {
   if (!rows || rows.length === 0) return "";
   const cols = Object.keys(rows[0]);
@@ -644,6 +618,8 @@ function toCsv(rows) {
   });
   return lines.join("\n");
 }
+if(exportXlsxBtn){ exportXlsxBtn.addEventListener('click', ()=>exportExcel(currentRows)); }
+
 exportBtn.addEventListener('click', () => {
   const rows = filterRows(currentRows, searchBox.value);
   const csv = toCsv(rows);
@@ -748,5 +724,4 @@ document.querySelectorAll('a.drill').forEach(a => {
 });
 </script>
 </body></html>
-
 
